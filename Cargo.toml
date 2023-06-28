@@ -1,0 +1,13 @@
+[package]
+name = "nt"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.71"
+clap = { version = "4.3.4", features = ["derive"] }
+etcetera = "0.8.0"
+sqlx = { version = "0.6.3", features = [ "runtime-tokio-rustls", "sqlite" ] }
+tokio = { version = "1.29.0", features = ["full"] }
