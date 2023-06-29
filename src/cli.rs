@@ -21,7 +21,8 @@ impl Cli {
 #[derive(Subcommand, Debug, PartialEq)]
 pub enum SubCommand {
     Main(MainArgs),
-    Export,
+    /// Exports to stdout some notes. 
+    Export(ExportArgs),
 }
 
 #[derive(Debug, clap::Args, PartialEq)]
@@ -33,6 +34,25 @@ pub enum SubCommand {
 pub struct MainArgs {
     #[clap(short, long, exclusive=true, num_args=1..)]
     pub note: Vec<String>
+}
+
+#[derive(Debug, clap::Args, PartialEq)]
+#[clap(group(
+    clap::ArgGroup::new("commands")
+        .args(&["last", "time"])
+        .required(true)
+))]
+pub struct ExportArgs {
+    #[clap(short, long)]
+    pub last: Option<u16>,
+
+    #[clap(short, long)]
+    /// Relative offset from now of notes to export.
+    /// 
+    /// Can be h, m, s for hours, minutes, seconds, respectively.
+    /// For example, nt export -t 5h exports the last 5 hours of notes.
+    /// nt exort -t 30m exports the last 30 minutes of notes.
+    pub time: Option<String>
 }
 
 #[cfg(test)]
@@ -59,7 +79,7 @@ mod test {
         let cli: Cli = clap::Parser::parse_from(invocation);
 
         assert!(match cli.get_subcommand() {
-            SubCommand::Export => true,
+            SubCommand::Export(_) => true,
             _ => false
         });
     }

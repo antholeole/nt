@@ -1,10 +1,12 @@
 use anyhow::{anyhow, Result};
 use cli::{Cli, SubCommand, MainArgs};
+use export::export;
 use tokio;
 
 mod cli;
 mod note;
 mod db;
+mod export;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -13,7 +15,7 @@ async fn main() -> Result<()> {
 
 
     match command {
-        SubCommand::Export => Ok(()),
+        SubCommand::Export(args) => export(args).await,
         SubCommand::Main(main_args) => parse_main(main_args).await
     }
 }

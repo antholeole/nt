@@ -30,7 +30,7 @@
 
             shellHook = ''
               export RUST_LOG=debug
-              export DATABASE_URL=sqlite:$XDG_DATA_HOME/nt/notes.db?mode=rwc
+              export DATABASE_URL=sqlite://$XDG_DATA_HOME/nt/db.db
             '';
           };
         }
