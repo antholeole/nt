@@ -39,7 +39,7 @@ pub struct MainArgs {
 #[derive(Debug, clap::Args, PartialEq)]
 #[clap(group(
     clap::ArgGroup::new("commands")
-        .args(&["last", "time"])
+        .args(&["last", "search", "time"])
         .required(true)
 ))]
 pub struct ExportArgs {
@@ -52,7 +52,11 @@ pub struct ExportArgs {
     /// Can be h, m, s for hours, minutes, seconds, respectively.
     /// For example, nt export -t 5h exports the last 5 hours of notes.
     /// nt exort -t 30m exports the last 30 minutes of notes.
-    pub time: Option<String>
+    pub time: Option<String>,
+
+    #[clap(short, long)]
+    /// A search term that can be optionally added. 
+    pub search: Option<String>
 }
 
 #[cfg(test)]

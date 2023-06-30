@@ -42,6 +42,9 @@ pub async fn export(export_args: ExportArgs) -> Result<()> {
             last_n
         ).fetch_all(&mut conn)
         .await?
+        .into_iter()
+        .rev()
+        .collect()
     } else if let Some(last_hms) = export_args.time {
         let time = (chrono::Utc::now() + match parse_time_denominations(last_hms)? {
             TimeDenominations::Hours(h) => Duration::hours(h),
@@ -53,6 +56,13 @@ pub async fn export(export_args: ExportArgs) -> Result<()> {
             "SELECT note FROM notes WHERE date_created >= ?", time
         ).fetch_all(&mut conn)
         .await?
+    } else if let Some(search_term) = export_args.search {
+        let wildcard_search_term = format!("%{}%", search_term);
+        sqlx::query_as!(Note,
+            "SELECT note FROM notes WHERE note LIKE ?",
+            wildcard_search_term
+        ).fetch_all(&mut conn)
+        .await?
     } else {
         // this is unreachable due to validation from clap
         Err(anyhow::anyhow!("no argument for export passed."))?
@@ -60,6 +70,7 @@ pub async fn export(export_args: ExportArgs) -> Result<()> {
 
     query_res
         .into_iter()
+        .rev()
         .for_each(|note| println!("{}", note.note));
 
     Ok(())

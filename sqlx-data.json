@@ -35,5 +35,23 @@
       }
     },
     "query": "SELECT note FROM notes WHERE date_created >= ?"
+  },
+  "d4c808c7a33930415b55ce59057f82d000ceb2f196ec35086c07a364fe920d94": {
+    "describe": {
+      "columns": [
+        {
+          "name": "note",
+          "ordinal": 0,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "SELECT note FROM notes WHERE note LIKE ?"
   }
 }
