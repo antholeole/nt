@@ -40,7 +40,7 @@
       defaultPackage = rustPkg.defaultPackage;
       devShell = rustPkg.devShell;
       overlays.default = prev: final: {
-        tl = rustPkg.defaultPackage."${final.system}";
+        nt = rustPkg.defaultPackage."${final.system}";
       };
     };
 }
