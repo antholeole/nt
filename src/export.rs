@@ -32,26 +32,35 @@ fn parse_time_denominations(input: String) -> Result<TimeDenominations> {
 }
 
 pub async fn export(export_args: ExportArgs) -> Result<()> {
+    struct Note { note: String, }
+
     let mut conn = get_conn().await?;
-    if let Some(last_n) = export_args.last {
-        sqlx::query(
-        "SELECT * FROM notes ORDER BY id DESC LIMIT ?"
-        ).bind(last_n)
+
+    let query_res = if let Some(last_n) = export_args.last {
+        sqlx::query_as!(Note,
+        "SELECT note FROM notes ORDER BY id DESC LIMIT ?",
+            last_n
+        ).fetch_all(&mut conn)
+        .await?
     } else if let Some(last_hms) = export_args.time {
-        let time = chrono::Utc::now() + match parse_time_denominations(last_hms)? {
+        let time = (chrono::Utc::now() + match parse_time_denominations(last_hms)? {
             TimeDenominations::Hours(h) => Duration::hours(h),
             TimeDenominations::Minutes(m) => Duration::minutes(m),
             TimeDenominations::Seconds(s) => Duration::seconds(s),
-        };
+        }).timestamp();
 
-        sqlx::query(
-            "SELECT * FROM notes WHERE date_created >= ?"
-        ).bind(time.timestamp())
+        sqlx::query_as!(Note, 
+            "SELECT note FROM notes WHERE date_created >= ?", time
+        ).fetch_all(&mut conn)
+        .await?
     } else {
         // this is unreachable due to validation from clap
         Err(anyhow::anyhow!("no argument for export passed."))?
-    }.execute(&mut conn)
-    .await?;
+    };
+
+    query_res
+        .into_iter()
+        .for_each(|note| println!("{}", note.note));
 
     Ok(())
 }

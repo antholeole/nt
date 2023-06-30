@@ -1,0 +1,39 @@
+{
+  "db": "SQLite",
+  "8adc3a75fe494b13270ed2bf4a875a729184d0c137d30879e4f4056dcb51e291": {
+    "describe": {
+      "columns": [
+        {
+          "name": "note",
+          "ordinal": 0,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "SELECT note FROM notes ORDER BY id DESC LIMIT ?"
+  },
+  "bc7303a7d5a536f8788234937ad7f15852c788917afe63d0bd049dfb439cec1c": {
+    "describe": {
+      "columns": [
+        {
+          "name": "note",
+          "ordinal": 0,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "SELECT note FROM notes WHERE date_created >= ?"
+  }
+}

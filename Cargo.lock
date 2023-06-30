@@ -339,6 +339,9 @@ name = "either"
 version = "1.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7fcaabb2fef8c910e7f4c7ce9f67a1283a1715879a7c230ca9d6d1ae31f16d91"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "errno"
@@ -972,6 +975,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "ryu"
+version = "1.0.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f91339c0467de62360649f8d3e185ca8de4224ff281f66000de5eb2a77a79041"
+
+[[package]]
 name = "scopeguard"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -985,6 +994,37 @@ checksum = "d53dcdb7c9f8158937a7981b48accfd39a43af418591a5d008c7b22b5e1b7ca4"
 dependencies = [
  "ring",
  "untrusted",
+]
+
+[[package]]
+name = "serde"
+version = "1.0.164"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9e8c8cf938e98f769bc164923b06dce91cea1751522f46f8466461af04c9027d"
+dependencies = [
+ "serde_derive",
+]
+
+[[package]]
+name = "serde_derive"
+version = "1.0.164"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d9735b638ccc51c28bf6914d90a2e9725b377144fc612c49a611fddd1b631d68"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.18",
+]
+
+[[package]]
+name = "serde_json"
+version = "1.0.99"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "46266871c240a00b8f503b877622fe33430b3c7d963bdc0f2adc511e54a1eae3"
+dependencies = [
+ "itoa",
+ "ryu",
+ "serde",
 ]
 
 [[package]]
@@ -1103,6 +1143,7 @@ dependencies = [
  "percent-encoding",
  "rustls",
  "rustls-pemfile",
+ "serde",
  "sha2",
  "smallvec",
  "sqlformat",
@@ -1123,9 +1164,12 @@ dependencies = [
  "dotenvy",
  "either",
  "heck",
+ "hex",
  "once_cell",
  "proc-macro2",
  "quote",
+ "serde",
+ "serde_json",
  "sha2",
  "sqlx-core",
  "sqlx-rt",
